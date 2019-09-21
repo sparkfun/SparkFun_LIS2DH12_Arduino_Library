@@ -1,38 +1,17 @@
-SparkFun Ublox Arduino Library
+SparkFun LIS2DH12 Arduino Library
 ===========================================================
 
-<table class="table table-hover table-striped table-bordered">
-  <tr align="center">
-   <td><a href="https://www.sparkfun.com/products/15136"><img src="https://cdn.sparkfun.com//assets/parts/1/3/5/1/4/15136-SparkFun_GPS-RTK2_Board_-_ZED-F9P__Qwiic_-03.jpg"></a></td>
-   <td><a href="https://www.sparkfun.com/products/15005"><img src="https://cdn.sparkfun.com//assets/parts/1/3/3/2/0/15005-SparkFun_GPS-RTK__Qwiic__-_NEO-M8P-2-00.jpg"></a></td>
-   <td><a href="https://www.sparkfun.com/products/15193"><img src="https://cdn.sparkfun.com//assets/parts/1/3/6/1/4/15193-SparkFun_GPS_Breakout_-_U.FL__ZOE-M8__Qwiic_-01.jpg"></a></td>
-   <td><a href="https://www.sparkfun.com/products/15210"><img src="https://cdn.sparkfun.com//assets/parts/1/3/6/4/8/15210-SparkFun_GPS_Breakout_-_Chip_Antenna__SAM-M8Q__Qwiic_-01.jpg"></a></td>
-  </tr>
-  <tr align="center">
-    <td><a href="https://www.sparkfun.com/products/15136">SparkFun GPS-RTK2 - ZED-F9P (GPS-15136)</a></td>
-    <td><a href="https://www.sparkfun.com/products/15005">SparkFun GPS-RTK - NEO-M8P-2 (GPS-15005)</a></td>
-    <td><a href="https://www.sparkfun.com/products/15193">SparkFun ZOE-M8Q Breakout (GPS-15193)</a></td>
-    <td><a href="https://www.sparkfun.com/products/15210">SparkFun SAM-M8Q Breakout (GPS-15210)</a></td>
-  </tr>
-</table>
+![SparkFun Qwiic LIS2DH12](https://cdn.sparkfun.com//assets/parts/1/3/4/3/3/Qwiic_Twist_Hookup_Guide.jpg)
 
-Ublox makes some incredible GPS receivers covering everything from low-cost, highly configurable modules such as the SAM-M8Q all the way up to the surveyor grade ZED-F9P with precision of the diameter of a dime. This library focuses on configuration and control of Ublox devices over I2C (called DDC by Ublox) and Serial. The UBX protocol is supported over both I2C and serial, and is a much easier and lighterweight interface to a GPS module. Stop parsing NMEA data! And simply ask for the datums you need.
+[*SparkFun Qwiic LIS2DH12 Accelerometer (DEV-15760)*](https://www.sparkfun.com/products/15760)
 
-This library can be installed via the Arduino Library manager. Search for **SparkFun Ublox**.
+A simple to use I2C library for the very low power LIS2DH12 from ST.
+
+This library can be installed via the Arduino Library manager. Search for **SparkFun LIS2DH12**. ST offers a great portable C library for the LIS2DH12. This library just wraps that library making it Arduino friendly and easier to use with lots of examples.
 
 Want to help? Please do! We are always looking for ways to improve and build out features of this library.
 
-* We are always interested in adding SPI support with a checkUbloxSPI() function
-
-Thanks to:
-
-* [trycoon](https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library/pull/7) for fixing the lack of I2C buffer length defines
-* [tve](https://github.com/tve) for building out serial additions and examples
-* [Redstoned](https://github.com/Redstoned) and [davidallenmann](https://github.com/davidallenmann) for adding PVT date and time
-* [wittend](https://forum.sparkfun.com/viewtopic.php?t=49874) for pointing out the RTCM print bug
-* Big thanks to [PaulZC] for implementing the combined key ValSet method
-
-Need a library for the Ublox and Particle? Checkout the [Particle library](https://github.com/aseelye/SparkFun_Ublox_Particle_Library) fork.
+* This library currently only supports I2C but could be expanded to use SPI as well.
 
 Repository Contents
 -------------------
@@ -47,48 +26,12 @@ Documentation
 
 * **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
 
-Polling vs. auto-reporting
---------------------------
-
-This library supports two modes of operation for getting navigation information with the `getPVT`
-function (based on the `UBX_NAV_PVT` protocol packet): polling and auto-reporting.
-
-The standard method is for the sketch to call `getPVT` (or one of the `getLatitude`, `getLongitude`,
-etc. methods) when it needs a fresh navigation solution. At that point the library sends a request
-to the GPS to produce a fresh solution. The GPS then waits until the next measurement occurs (e.g.
-once per second or as set using `setNavigationFrequency`) and then sends the fresh data.
-The advantage of this method is that the data received is always fresh, the downside is that getPVT
-can block until the next measurement is made by the GPS, e.g. up to 1 second if the nav frequency is
-set to one second.
-
-An alternate method can be chosen using `setAutoPVT(true)` which instructs the GPS to send the
-navigation information (`UBX_NAV_PVT` packet) as soon as it is produced. This is the way the older
-NMEA navigation data has been used for years. The sketch continues to call `getPVT` as before but
-under the hood the library returns the data of the last solution received from the GPS, which may be
-a bit out of date (how much depends on the `setNavigationFrequency` value).
-
-The advantage of this method is that getPVT does not block: it returns true if new data is available
-and false otherwise. The disadvantages are that the data may be a bit old and that buffering for
-these spontaneus `UBX_NAV_PVT` packets is required (100 bytes each). When using Serial the buffering
-is an issue because the std serial buffer is 32 or 64 bytes long depending on Arduino version. When
-using I2C the buffering is not an issue because the GPS device has at least 1KB of internal buffering
-(possibly as large as 4KB).
-
-As an example, assume that the GPS is set to produce 5 navigation
-solutions per second and that the sketch only calls getPVT once a second, then the GPS will queue 5
-packets in its internal buffer (about 500 bytes) and the library will read those when getPVT is
-called, update its internal copy of the nav data 5 times, and return `true` to the sketch. The
-skecth calls `getLatitude`, etc. and retrieve the data of the most recent of those 5 packets.
-
 Products That Use This Library 
 ---------------------------------
 
-* [GPS-15136](https://www.sparkfun.com/products/15136) - SparkFun GPS-RTK2 ZED-F9P
-* [GPS-15005](https://www.sparkfun.com/products/15005) - SparkFun GPS-RTK NEO-M8P-2
-* [GPS-15210](https://www.sparkfun.com/products/15210) - SparkFun GPS Breakout - Chip Antenna, SAM-M8Q (Qwiic)
-* [GPS-15193](https://www.sparkfun.com/products/15193) - SparkFun GPS Breakout - Chip Antenna, ZOE-M8Q (Qwiic)
-* [SPX-14980](https://www.sparkfun.com/products/14980) - SparkX GPS-RTK Black
-* [SPX-15106](https://www.sparkfun.com/products/15106) - SparkX SAM-M8Q
+* [DEV-15136](https://www.sparkfun.com/products/15170) - SparkFun Edge
+* [DEV-15005](https://www.sparkfun.com/products/15420) - SparkFun Edge 2
+* [SPX-15210](https://www.sparkfun.com/products/15760) - Qwiic LIS2DH12 Accelerometer Breakout
 
 License Information
 -------------------
