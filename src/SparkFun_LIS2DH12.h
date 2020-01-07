@@ -29,7 +29,6 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include <cmath>
 
 #include "lis2dh12_reg.h" //This is the ST library
 

@@ -6,7 +6,8 @@
   If you see me (or any other SparkFun employee) at the
   local, and you've found our code helpful, please buy us a round!
 
-  This example demonstrates how to read XYZ from the LIS2DH12.
+  This example demonstrates how to enable and disable the self test feature.
+  Enabling self test will expose each axis to ~350mg of force.
 
   Feel like supporting open source hardware?
   Buy a board from SparkFun!
@@ -23,8 +24,7 @@
 #include <Wire.h>
 
 #include "SparkFun_LIS2DH12.h" //Click here to get the library: http://librarymanager/All#SparkFun_LIS2DH12
-
-SPARKFUN_LIS2DH12 accel; //Create instance
+SPARKFUN_LIS2DH12 accel;       //Create instance
 
 void setup()
 {
@@ -36,12 +36,37 @@ void setup()
   if (accel.begin() == false)
   {
     Serial.println("Accelerometer not detected. Are you sure you did a Wire1.begin()? Freezing...");
-    while (1);
+    while (1)
+      ;
   }
+
+  Serial.println("Press 1 and 2 to enable or disable the self test");
 }
 
 void loop()
 {
+  if (Serial.available())
+  {
+    byte incoming = Serial.read();
+
+    if (incoming == '1')
+    {
+      Serial.println("Enable self test");
+      accel.enableSelfTest();
+    }
+    else if (incoming == '2')
+    {
+      Serial.println("Disable self test");
+      accel.disableSelfTest();
+    }
+    else
+    {
+      Serial.print("Unknown: ");
+      Serial.write(incoming);
+      Serial.println();
+    }
+  }
+
   //Print accel values only if new data is available
   if (accel.available())
   {
@@ -60,8 +85,5 @@ void loop()
     Serial.print(tempC, 1);
     Serial.print("C");
     Serial.println();
-
-
   }
-
 }
