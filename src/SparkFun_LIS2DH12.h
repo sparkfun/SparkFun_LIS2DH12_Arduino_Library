@@ -29,6 +29,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <cmath>
 
 #include "lis2dh12_reg.h" //This is the ST library
 
@@ -65,6 +66,9 @@ public:
 
   void setMode(uint8_t mode); //Set mode to low, normal, or high data rate
   uint8_t getMode();          //Get current sensor mode
+
+  void enableSelfTest(bool direction = true);
+  void disableSelfTest();
 
   void enableTapDetection(); //Enable the single tap interrupt
   void disableTapDetection();

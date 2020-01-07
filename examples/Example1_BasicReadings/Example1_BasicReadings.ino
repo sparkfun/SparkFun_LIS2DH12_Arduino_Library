@@ -34,11 +34,11 @@ void setup()
   Serial.begin(115200);
   Serial.println("SparkFun Accel Example");
 
-  Wire1.begin(); //Accel is on IOM3 and defined in the variant file as Wire1.
+  Wire.begin(); //Accel is on IOM3 and defined in the variant file as Wire1.
 
   //By default the SparkFun library uses Wire. We need to begin
   //with Wire1 on the Edge/Edge2.
-  if (accel.begin(ACCEL_ADDRESS, Wire1) == false)
+  if (accel.begin(ACCEL_ADDRESS, Wire) == false)
   {
     Serial.println("Accelerometer not detected. Are you sure you did a Wire1.begin()? Freezing...");
     while (1);

@@ -324,6 +324,25 @@ void SPARKFUN_LIS2DH12::getTempData()
   tempIsFresh = true;
 }
 
+//Enter a self test
+void SPARKFUN_LIS2DH12::enableSelfTest(bool direction)
+{
+  if (direction == true)
+  {
+    lis2dh12_self_test_set(&dev_ctx, LIS2DH12_ST_POSITIVE);
+  }
+  else
+  {
+    lis2dh12_self_test_set(&dev_ctx, LIS2DH12_ST_NEGATIVE);
+  }
+}
+
+//Exit self test
+void SPARKFUN_LIS2DH12::disableSelfTest()
+{
+  lis2dh12_self_test_set(&dev_ctx, LIS2DH12_ST_DISABLE);
+}
+
 //Set the output data rate of the sensor
 void SPARKFUN_LIS2DH12::setDataRate(uint8_t dataRate)
 {
