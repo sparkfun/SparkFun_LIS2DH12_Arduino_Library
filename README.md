@@ -1,7 +1,7 @@
 SparkFun LIS2DH12 Arduino Library
 ===========================================================
 
-![SparkFun Qwiic LIS2DH12](https://cdn.sparkfun.com//assets/parts/1/3/4/3/3/Qwiic_Twist_Hookup_Guide.jpg)
+![SparkFun Qwiic LIS2DH12](https://cdn.sparkfun.com//assets/parts/1/4/3/5/5/15760-Triple_Axis_Accelerometer_Breakout_-_LIS2DH12__Qwiic_-01.jpg)
 
 [*SparkFun Qwiic LIS2DH12 Accelerometer (DEV-15760)*](https://www.sparkfun.com/products/15760)
 

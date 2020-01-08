@@ -25,23 +25,20 @@
 #include <Wire.h>
 
 #include "SparkFun_LIS2DH12.h" //Click here to get the library: http://librarymanager/All#SparkFun_LIS2DH12
-
-SPARKFUN_LIS2DH12 accel; //Create instance
-
-#define ACCEL_ADDRESS 0x19 //Default address on the LIS2DH12 breakout board, Edge, and Edge2
-//#define ACCEL_ADDRESS 0x18 //Address if the address jumper is closed on the breakout board
+SPARKFUN_LIS2DH12 accel;       //Create instance
 
 void setup()
 {
   Serial.begin(115200);
   Serial.println("SparkFun Accel Example");
 
-  Wire1.begin(); //Accel is on IOM3 and defined in the variant file as Wire1.
+  Wire.begin();
 
-  if (accel.begin(ACCEL_ADDRESS, Wire1) == false)
+  if (accel.begin() == false)
   {
     Serial.println("Accelerometer not detected. Freezing...");
-    while (1);
+    while (1)
+      ;
   }
 
   accel.setScale(LIS2DH12_2g);
@@ -73,7 +70,7 @@ void setup()
   //accel.setDataRate(LIS2DH12_ODR_5kHz376_LP_1kHz344_NM_HP);
   int currentRate = accel.getDataRate();
   Serial.print("Current rate (0 to 9): ");
-  Serial.println(currentRate);  
+  Serial.println(currentRate);
 }
 
 void loop()

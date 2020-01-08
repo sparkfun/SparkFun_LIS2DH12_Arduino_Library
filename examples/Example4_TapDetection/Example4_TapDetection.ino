@@ -26,9 +26,6 @@
 
 SPARKFUN_LIS2DH12 accel; //Create instance
 
-#define ACCEL_ADDRESS 0x19 //Default address on the LIS2DH12 breakout board, Edge, and Edge2
-//#define ACCEL_ADDRESS 0x18 //Address if the address jumper is closed on the breakout board
-
 int tapCounter = 0;
 
 void setup()
@@ -36,14 +33,13 @@ void setup()
   Serial.begin(115200);
   Serial.println("SparkFun Accel Example");
 
-  Wire1.begin(); //Accel is on IOM3 and defined in the variant file as Wire1.
+  Wire.begin();
 
-  //By default the SparkFun library uses Wire. We need to begin
-  //with Wire1 on the Edge/Edge2.
-  if (accel.begin(ACCEL_ADDRESS, Wire1) == false)
+  if (accel.begin() == false)
   {
     Serial.println("Accelerometer not detected. Are you sure you did a Wire1.begin()? Freezing...");
-    while (1);
+    while (1)
+      ;
   }
 
   //By default, sensor is set to 25Hz, 12bit, 2g at .begin()
@@ -52,7 +48,8 @@ void setup()
   accel.enableTapDetection();
   accel.setTapThreshold(40); //7-bit value. Max value is 127. 10 is a little low. 40 is ok. 100 is a bit hard.
 
-  while (accel.isTapped() == true) delay(10); //Clear any initial event that may be in the buffer
+  while (accel.isTapped() == true)
+    delay(10); //Clear any initial event that may be in the buffer
 }
 
 void loop()
@@ -62,6 +59,7 @@ void loop()
     Serial.print("Tap: ");
     Serial.println(++tapCounter);
 
-    while (accel.isTapped() == true) delay(10); //Wait for event to complete
+    while (accel.isTapped() == true)
+      delay(10); //Wait for event to complete
   }
 }
