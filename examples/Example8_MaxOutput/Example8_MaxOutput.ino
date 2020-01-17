@@ -28,7 +28,7 @@ SPARKFUN_LIS2DH12 accel;       //Create instance
 
 void setup()
 {
-  Serial.begin(500000);
+  Serial.begin(115200);
   Serial.println("SparkFun Accel Example");
 
   Wire.begin();
@@ -61,20 +61,36 @@ void loop()
     int accelX = accel.getRawX();
     int accelY = accel.getRawY();
     int accelZ = accel.getRawZ();
-    //float tempC = accel.getTemperature();
+    //    //float tempC = accel.getTemperature();
+    //
+    //    Serial.print("x:");
+    //    Serial.print(accelX);
+    //    Serial.print(" y:");
+    //    Serial.print(accelY);
+    //    Serial.print(" z:");
+    //    Serial.print(accelZ);
+    //    //    Serial.print(tempC, 1);
+    //    //    Serial.print("C");
+    //
+    //    Serial.print(" hz:");
+    //    //Serial.print(measurements / (millis() / 1000.0), 2);
+    //    Serial.println();
 
-    Serial.print("x:");
-    Serial.print(accelX);
-    Serial.print(" y:");
-    Serial.print(accelY);
-    Serial.print(" z:");
-    Serial.print(accelZ);
-    //Serial.print(" temp:");
-    //    Serial.print(tempC, 1);
-    //    Serial.print("C");
+    measurements++;
 
-    Serial.print(" hz:");
-    Serial.print(measurements++ / (millis() / 1000.0), 2);
-    Serial.println();
+    if (measurements % 1000 == 0)
+    {
+      int hertz = measurements * 1000 / millis();
+      Serial.print("measurements: ");
+      Serial.print(measurements);
+      Serial.print(" time: ");
+      Serial.print(millis());
+      Serial.print(" Measurement rate: ");
+      Serial.print(hertz);
+      Serial.print("Hz");
+      Serial.println();
+    }
   }
+
+  //delay(10);
 }
