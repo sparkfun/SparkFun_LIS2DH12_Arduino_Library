@@ -58,17 +58,18 @@ void loop()
 {
   if (accel.available())
   {
-    float accelX = accel.getX();
-    float accelY = accel.getY();
-    float accelZ = accel.getZ();
+    int accelX = accel.getRawX();
+    int accelY = accel.getRawY();
+    int accelZ = accel.getRawZ();
     //float tempC = accel.getTemperature();
 
-    Serial.print(accelX, 1);
     Serial.print("x:");
-    Serial.print(accelY, 1);
+    Serial.print(accelX);
     Serial.print(" y:");
-    Serial.print(accelZ, 1);
+    Serial.print(accelY);
     Serial.print(" z:");
+    Serial.print(accelZ);
+    //Serial.print(" temp:");
     //    Serial.print(tempC, 1);
     //    Serial.print("C");
 
