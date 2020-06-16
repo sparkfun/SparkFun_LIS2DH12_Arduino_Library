@@ -15,7 +15,7 @@ Want to help? Please do! We are always looking for ways to improve and build out
 
 Thanks to:
 
-* Gabriel Ballesteros for reporting and fixing the [setMode()](https://github.com/sparkfun/SparkFun_LIS2DH12_Arduino_Library/issues/3) bug
+* [tealbrains](https://github.com/tealbrains) for reporting and fixing the [setMode()](https://github.com/sparkfun/SparkFun_LIS2DH12_Arduino_Library/issues/3) bug
 
 
 Repository Contents
