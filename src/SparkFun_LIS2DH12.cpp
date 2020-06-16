@@ -392,7 +392,7 @@ void SPARKFUN_LIS2DH12::disableTemperature()
 
 void SPARKFUN_LIS2DH12::setMode(uint8_t mode)
 {
-  if (mode > LIS2DH12_HR_12bit)
+  if (mode > LIS2DH12_LP_8bit)
     mode = LIS2DH12_HR_12bit; //Default to 12 bit
 
   currentMode = mode;
