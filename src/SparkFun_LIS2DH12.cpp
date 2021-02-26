@@ -408,6 +408,71 @@ uint8_t SPARKFUN_LIS2DH12::getMode(void)
   return ((uint8_t)mode);
 }
 
+void SPARKFUN_LIS2DH12::setInt1Threshold(uint8_t threshold)
+{
+  lis2dh12_int1_gen_threshold_set(&dev_ctx, threshold);
+}
+
+uint8_t SPARKFUN_LIS2DH12::getInt1Threshold(void)
+{
+  uint8_t threshold;
+  lis2dh12_int1_gen_threshold_get(&dev_ctx, &threshold);
+  return (threshold);
+}
+
+void SPARKFUN_LIS2DH12::setInt1Duration(uint8_t duration)
+{
+  lis2dh12_int1_gen_duration_set(&dev_ctx, duration);
+}
+uint8_t SPARKFUN_LIS2DH12::getInt1Duration(void)
+{
+  uint8_t duration;
+  lis2dh12_int1_gen_duration_get(&dev_ctx, &duration);
+  return (duration);
+}
+
+void SPARKFUN_LIS2DH12::setIntPolarity(uint8_t level)
+{
+  lis2dh12_ctrl_reg6_t val;
+  lis2dh12_pin_int2_config_get(&dev_ctx, &val);
+
+  if (level == HIGH)
+    val.int_polarity = 0; //Clear INT_POLARITY bit for active high
+  else
+    val.int_polarity = 1; //Set INT_POLARITY bit for active low
+
+  lis2dh12_pin_int2_config_set(&dev_ctx, &val);
+}
+
+void SPARKFUN_LIS2DH12::enableInt1IA1(void)
+{
+  lis2dh12_ctrl_reg3_t val;
+  lis2dh12_pin_int1_config_get(&dev_ctx, &val);
+
+  val.i1_ia1 = 1; //Enable IA1 on INT1
+
+  lis2dh12_pin_int1_config_set(&dev_ctx, &val);
+}
+
+void SPARKFUN_LIS2DH12::disableInt1IA1(void)
+{
+  lis2dh12_ctrl_reg3_t val;
+  lis2dh12_pin_int1_config_get(&dev_ctx, &val);
+
+  val.i1_ia1 = 0; //Disable IA1 on INT1
+
+  lis2dh12_pin_int1_config_set(&dev_ctx, &val);
+}
+
+bool SPARKFUN_LIS2DH12::getInt1(void)
+{
+  lis2dh12_int1_src_t val;
+  lis2dh12_int1_gen_source_get(&dev_ctx, &val);
+  if (val.ia)
+    return (true);
+  return (false);
+}
+
 //Enable single tap detection
 void SPARKFUN_LIS2DH12::enableTapDetection()
 {

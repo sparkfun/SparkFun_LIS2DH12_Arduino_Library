@@ -74,6 +74,17 @@ public:
   void setTapThreshold(uint8_t threshold); //Set the 7-bit threshold value for tap and double tap
   bool isTapped();                         //Returns true if Z, Y, or X tap detection bits are set
 
+  void setInt1Threshold(uint8_t threshold);
+  uint8_t getInt1Threshold(void);
+  void setInt1Duration(uint8_t duration);
+  uint8_t getInt1Duration(void);
+
+  void setIntPolarity(uint8_t level);
+  void enableInt1IA1(void);
+  void disableInt1IA1(void);
+
+  bool getInt1(void);
+
   lis2dh12_ctx_t dev_ctx;
 
   static int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
