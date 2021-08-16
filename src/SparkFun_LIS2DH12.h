@@ -80,8 +80,9 @@ public:
   uint8_t getInt1Duration(void);
 
   void setIntPolarity(uint8_t level);
-  void enableInt1IA1(void);
-  void disableInt1IA1(void);
+  void setInt1IA1(bool enable);
+  void setInt1Latch(bool enable);
+  void setInt1(bool enable);
 
   bool getInt1(void);
 

@@ -444,22 +444,15 @@ void SPARKFUN_LIS2DH12::setIntPolarity(uint8_t level)
   lis2dh12_pin_int2_config_set(&dev_ctx, &val);
 }
 
-void SPARKFUN_LIS2DH12::enableInt1IA1(void)
+void SPARKFUN_LIS2DH12::setInt1IA1(bool enable)
 {
   lis2dh12_ctrl_reg3_t val;
   lis2dh12_pin_int1_config_get(&dev_ctx, &val);
 
-  val.i1_ia1 = 1; //Enable IA1 on INT1
-
-  lis2dh12_pin_int1_config_set(&dev_ctx, &val);
-}
-
-void SPARKFUN_LIS2DH12::disableInt1IA1(void)
-{
-  lis2dh12_ctrl_reg3_t val;
-  lis2dh12_pin_int1_config_get(&dev_ctx, &val);
-
-  val.i1_ia1 = 0; //Disable IA1 on INT1
+  if (enable == true)
+    val.i1_ia1 = 1; //Enable IA1 on INT1
+  else
+    val.i1_ia1 = 0; //Disable IA1 on INT1
 
   lis2dh12_pin_int1_config_set(&dev_ctx, &val);
 }
@@ -468,9 +461,52 @@ bool SPARKFUN_LIS2DH12::getInt1(void)
 {
   lis2dh12_int1_src_t val;
   lis2dh12_int1_gen_source_get(&dev_ctx, &val);
+
   if (val.ia)
     return (true);
   return (false);
+}
+
+void SPARKFUN_LIS2DH12::setInt1Latch(bool enable)
+{
+  lis2dh12_ctrl_reg5_t ctrl_reg5;
+  int32_t ret;
+
+  ret = lis2dh12_read_reg(&dev_ctx, LIS2DH12_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+  if (ret == 0)
+  {
+    if (enable)
+      ctrl_reg5.lir_int1 = 1;
+    else
+      ctrl_reg5.lir_int1 = 0;
+    ret = lis2dh12_write_reg(&dev_ctx, LIS2DH12_CTRL_REG5, (uint8_t *)&ctrl_reg5, 1);
+  }
+  //return ret;
+}
+
+//Enable X or Y as interrupt sources
+void SPARKFUN_LIS2DH12::setInt1(bool enable)
+{
+  lis2dh12_int1_cfg_t val;
+
+  val.aoi = 0; //Set 'Or' combination of interrupts
+  val._6d = 0; //Set 'Or' combination of interrupts
+  if (enable)
+    val.xhie = 1;
+  else
+    val.xhie = 0;
+
+  val.xlie = 0; //Do not set both low and high
+
+  if (enable)
+    val.yhie = 1;
+  else
+    val.yhie = 0;
+
+  val.ylie = 0;
+  val.zhie = 0; //Leave out Z otherwise it will always trigger when sitting on table
+  val.zlie = 0;
+  lis2dh12_int1_gen_conf_set(&dev_ctx, &val);
 }
 
 //Enable single tap detection
@@ -573,7 +609,7 @@ int32_t SPARKFUN_LIS2DH12::platform_read(void *handle, uint8_t reg, uint8_t *buf
   classPointer->_i2cPort->write(reg);
   classPointer->_i2cPort->endTransmission(false); //Don't release bus. Will return 0 upon success.
 
-  classPointer->_i2cPort->requestFrom(classPointer->_i2cAddress, len);
+  classPointer->_i2cPort->requestFrom((uint8_t)classPointer->_i2cAddress, (uint8_t)len);
   for (uint16_t x = 0; x < len; x++)
   {
     bufp[x] = classPointer->_i2cPort->read();

@@ -42,6 +42,10 @@ disableTapDetection	KEYWORD2
 setTapThreshold	KEYWORD2
 isTapped	KEYWORD2
 
+setInt1IA1	KEYWORD2
+setInt1Latch	KEYWORD2
+setInt1	KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
